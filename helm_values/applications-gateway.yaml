@@ -1,0 +1,24 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: applications-gateway
+  namespace: ${namespace}
+spec:
+  selector:
+    istio: ${istio_ingress_gateway_chart_name}
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: ${secret_name}  # Name of the Secret containing the TLS certificate.
+    hosts:
+    - "*"
